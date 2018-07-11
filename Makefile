@@ -12,5 +12,3 @@ all:
 
 clean:
 	rm -f writer reader writer_arm reader_arm
-
-
