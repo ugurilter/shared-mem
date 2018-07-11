@@ -15,7 +15,7 @@ int main()
 	struct timespec tspec;
     
 	/* init shm from reader's context */
-    void *read_addr = attach_writer();
+	void *read_addr = attach_writer();
 
 	while (1) {
 		memcpy(&tspec, read_addr, sizeof(struct timespec));
