@@ -10,34 +10,34 @@
 
 #include "writer.h"
 
-/* global ptr to shm */
-void *ptr;
-
-int create_shm(void);
+int create_shm(void *ctx);
 
 int main(int argc, char *argv[])
 {
 	int rc;
+	void *ctx;
 	struct timespec tspec;
 
-	rc = create_shm();
+	rc = create_shm(ctx);
 	if (rc < 0) {
 		printf("shared memory initialization failed!\n");
 		return -1;
 	}
 
+	printf("ctx: %p\n", ctx);
 	while (1) {
 		clock_gettime(CLOCK_MONOTONIC, &tspec);
-		memcpy(ptr, &tspec, sizeof(struct timespec));
+		//memcpy(ctx, &tspec, sizeof(struct timespec));
 		sleep(1);
 	}
 
 	return 0;
 }
 
-int create_shm(void)
+int create_shm(void *ctx)
 {
 	int shm_fd;
+	void *ptr;
 	const char *shm_name = "shm_test";
 	const int size = sizeof(struct timespec);
 
@@ -56,6 +56,10 @@ int create_shm(void)
 		printf("Map failed\n");
 		goto bail;
 	}
+
+	printf("ctx: %p , ptr: %p\n", ctx, ptr);
+	ctx = ptr;
+	printf("ctx: %p , ptr: %p\n", ctx, ptr);
 
 	return 0;
 
